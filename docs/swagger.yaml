@@ -1,0 +1,112 @@
+info:
+  contact:
+    name: Eddie Lin
+  description: This is a sample server implement with Go.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Go Backend
+  version: "0.1"
+paths:
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: Return a list of books' title
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Get a list of books' title
+      tags:
+      - Books
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create book
+      operationId: books.create-book
+      parameters:
+      - description: Book Title
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Book Cover
+        in: formData
+        name: cover
+        required: true
+        type: file
+      - collectionFormat: csv
+        description: Book Contents
+        in: formData
+        items:
+          type: file
+        name: contents
+        required: true
+        type: array
+      responses:
+        "200":
+          description: OK
+      summary: Create book
+      tags:
+      - Books
+  /books/{title}/contents/{chapter}/{page}:
+    get:
+      consumes:
+      - application/json
+      description: get book's content
+      parameters:
+      - description: Book Title
+        in: path
+        name: title
+        required: true
+        type: string
+      - description: Book Chapter
+        in: path
+        name: chapter
+        required: true
+        type: integer
+      - description: Book Page
+        in: path
+        name: page
+        required: true
+        type: integer
+      produces:
+      - image/jpeg
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+      summary: Get book content
+      tags:
+      - Books
+  /books/{title}/cover:
+    get:
+      consumes:
+      - application/json
+      description: get book's cover image
+      parameters:
+      - description: Book Title
+        in: path
+        name: title
+        required: true
+        type: string
+      produces:
+      - image/jpeg
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+      summary: Get book cover
+      tags:
+      - Books
+schemes:
+- http
+swagger: "2.0"
